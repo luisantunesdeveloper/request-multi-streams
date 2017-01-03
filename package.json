@@ -1,6 +1,6 @@
 {
   "name": "request-multi-streams",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Make multiple http requests. Receive response progress indicators, pipe streams.",
   "main": "index.js",
   "repository": "https://github.com/luisantunesdeveloper/request-multi-streams.git",

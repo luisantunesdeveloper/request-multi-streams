@@ -8,12 +8,12 @@ const req1 = {
 	options: {
 		url: 'https://cdn.pixabay.com/photo/2014/03/27/21/10/waterfall-299685_1280.jpg'
 	},
-	numberOfRequests: 1000 // Not the same as retries
+	numberOfRequests: 10 // Not the same as retries
 };
 
 const req2 = {
 	options: {
-		url: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcS2bZdzOUGStsuLVzH79PTGHMoJ0B_ZpUcJylVdveVd4p5oyywvSCRaHSg'
+		url: 'http://www.textfiles.com/fun/acronym.txt'
 	},
 	progressOptions: {
 	    throttle: 0,                    // Throttle the progress event to 2000ms, defaults to 1000ms 
@@ -37,6 +37,9 @@ function getStreams() {
 
 			emitters[name].on('response', (data) => {
 				console.log(chalk.yellow(`Request ${data.reqNumber} for ${data.args.options.url}: got a response`));
+				if (name === 'http://www.textfiles.com/fun/acronym.txt') {
+					data.stream.pipe(fs.createWriteStream(`${__dirname}/${data.reqNumber}`));
+				}
 			});
 
 			emitters[name].on('error', (error) => {

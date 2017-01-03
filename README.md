@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/luisantunesdeveloper/request-multi-streams.svg?branch=master)](https://travis-ci.org/luisantunesdeveloper/request-multi-streams)
-
-# request-multi-streams
+[![Test Coverage](https://codeclimate.com/github/luisantunesdeveloper/request-multi-streams/badges/coverage.svg)](https://codeclimate.com/github/luisantunesdeveloper/request-multi-streams/coverage)  
+# request-multi-streams  
 This library wraps multiple http get requests using request/request and IndigoUnited/node-request-progress to different locations at the same time. The streams are handed and can be piped as they come, along with the progress. You can even repeat a request multiple times.
 
 ## Install
@@ -36,6 +36,7 @@ const streamEmitters = httpMultiStreams.streams([req1, req2]);
 ```
 
 ### Responses
+You can do whatever you want with the streams. In this case we are piping the streams for the request name 'http://www.textfiles.com/fun/acronym.txt' to a file. See examples folder for more info.
 ```
 for(var name in emitters) {
 	//listen the events
@@ -45,14 +46,9 @@ for(var name in emitters) {
 
 	emitters[name].on('response', (data) => {
 		console.log(chalk.yellow(`Request ${data.reqNumber} for ${data.args.options.url}: got a response`));
-	});
-
-	emitters[name].on('error', (error) => {
-		console.log(chalk.red(`Request ${error.reqNumber} for ${error.args.options.url}: finished on error ${error.error}`));
-	});
-
-	emitters[name].on('end', (end) => {
-		console.log(chalk.green(`Request ${end.reqNumber} for ${end.args.options.url}: finished with sucess`));
+		if (name === 'http://www.textfiles.com/fun/acronym.txt') {
+			data.stream.pipe(fs.createWriteStream(`${__dirname}/${data.reqNumber}`));
+		}
 	});
 }
 ```
