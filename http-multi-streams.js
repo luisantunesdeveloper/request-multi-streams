@@ -48,7 +48,10 @@ function get(args) {
     return emitter;
 }
 
-function emitters(requests) {
+function streams(requests) {
+    if (!requests) {
+        return new Error('There is no requests to be made');
+    }
     let emitters = {};
     for(const request of requests) {
         emitters[request.location] = get(request);
@@ -57,6 +60,6 @@ function emitters(requests) {
 }
 
 module.exports = {
-    emitters: emitters
+    streams: streams
 };
 

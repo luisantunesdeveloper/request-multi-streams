@@ -21,8 +21,8 @@ const req2 = {
 
 const reqs = [req1, req2];
 
-function getEmitters() {
-	const emitters = httpMultiStreams.emitters(reqs);
+function getStreams() {
+	const emitters = httpMultiStreams.streams(reqs);
 
 	if (emitters) {
 		for(var name in emitters) {
@@ -46,5 +46,5 @@ function getEmitters() {
 	}
 }
 
-module.exports = getEmitters();
+module.exports = getStreams();
 

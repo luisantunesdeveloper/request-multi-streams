@@ -12,12 +12,14 @@
   },
   "devDependencies": {
     "chalk": "^1.1.3",
-    "jest": "^18.1.0"
+    "tap": "^8.0.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3"
   },
   "scripts": {
     "example": "node ./examples",
     "d-example": "node-debug ./examples",
-    "test": "jest"
+    "test": "node ./tests/*.js | tap-spec",
+    "test-cov": "tap tests/**/*.js --cov --coverage-report=lcov"
   }
 }
-
