@@ -21,7 +21,7 @@ function createIterable(n) {
 
 /**
  *
- * Get a stream for a location
+ * Get a streams for locations. Build an iterable in the process.
  * @param {Object} args 
  *
  * @return {Object} EventEmitter

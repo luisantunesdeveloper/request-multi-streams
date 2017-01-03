@@ -2,7 +2,7 @@
 
 const test = require('tape').test;
 const proxyquire = require('proxyquire');
-const httpMultiStreams = require('../http-multi-streams');
+const httpMultiStreams = require('../');
 const eventEmitter = require('events').EventEmitter;
 
 const req1 = {
