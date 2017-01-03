@@ -31,30 +31,35 @@ function get(args) {
     const emitter = new eventEmitter();
     for (const i of iterable) {
         let reqNumber = i + 1;
-        const stream = progress(request(args.location))
+        const stream = progress(request(args.options.url), args.progressOptions)
             .on('response', (response) => {
-                emitter.emit('response', {number: reqNumber, args: args, response: response, stream: stream});
+                emitter.emit('response', {reqNumber: reqNumber, args: args, response: response, stream: stream});
             })
-            .on('progress', (state) => {
-                emitter.emit('progress', {number: reqNumber, args: args, state: state});
+            .on('progress', (progress) => {
+                emitter.emit('progress', {reqNumber: reqNumber, args: args, progress: progress});
             })
             .on('end', () => {
-                emitter.emit('end', {number: reqNumber, args: args});
+                emitter.emit('end', {reqNumber: reqNumber, args: args});
             })
-            .on('error', (err) => {
-                emitter.emit('error', {number: reqNumber, args: args, err: err});
+            .on('error', (error) => {
+                emitter.emit('error', {reqNumber: reqNumber, args: args, error: error});
             });
     }
     return emitter;
 }
 
+/**
+ * Dispatches the requests.
+ * @param {Array} requests
+ * @return {Object} the key is the url for each request/response
+ */
 function streams(requests) {
     if (!requests) {
         return new Error('There is no requests to be made');
     }
     let emitters = {};
     for(const request of requests) {
-        emitters[request.location] = get(request);
+        emitters[request.options.url] = get(request);
     }
     return emitters;
 }

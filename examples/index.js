@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./multiple-streams');
+module.exports = require('./request-multi-streams');

@@ -1,5 +1,5 @@
 'use strict';
 
-const httpMultiStreams = require('./http-multi-streams');
+const httpMultiStreams = require('./request-multi-streams');
 
 module.exports = httpMultiStreams;

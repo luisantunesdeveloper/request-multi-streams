@@ -1,9 +1,9 @@
 {
-  "name": "http-multi-streams",
-  "version": "0.0.1",
+  "name": "request-multi-streams",
+  "version": "0.0.0",
   "description": "Make multiple http requests. Receive response progress indicators, pipe streams.",
   "main": "index.js",
-  "repository": "https://github.com/luisantunesdeveloper/http-multi-streams.git",
+  "repository": "https://github.com/luisantunesdeveloper/request-multi-streams.git",
   "author": "Luís Antunes",
   "license": "MIT",
   "dependencies": {
@@ -19,7 +19,6 @@
   },
   "scripts": {
     "example": "node ./examples",
-    "d-example": "node-debug ./examples",
     "test": "node ./tests/*.js | tap-spec",
     "test-cov": "tap tests/**/*.js --cov --coverage-report=lcov"
   }
