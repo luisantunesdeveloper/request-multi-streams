@@ -38,8 +38,8 @@ const buildStreamEmitters = (type) => {
 			case 'end': 
 				emitter.emit('end', {reqNumber: 1, args: req1});
 				break;
-			default:
-				break;
+			case 'error':
+				emitter.emit('error', {reqNumber: 1, args: req1, error: new Error('some error')});
 		}
 	}, 0);
 	return emitters;
@@ -83,10 +83,20 @@ test('it should emit end', (assert) => {
 
 test('it should emit error', (assert) => {	
 	const resultEmitter = moduleMock('error').streams(reqs);
-	resultEmitter[req1.options.url].on('error', (error) => {
-		assert.deepEqual(new Error('some error'), error.error);
+	const fn = (error) => {
+		assert.deepEqual(error.context, {reqNumber: 1, args: req1, error: new Error('some error')});
 		assert.end();
-	});
-	resultEmitter[req1.options.url].emit('error', {number: 1, args: req1, error: new Error('some error')});
+	};
+	resultEmitter[req1.options.url].on('error', fn);
+	process.on('uncaughtException', fn);
 });
 
+test('it should emit error', (assert) => {	
+	const resultEmitter = moduleMock('').streams(reqs);
+	const fn = (error) => {
+		assert.deepEqual(error, {reqNumber: 1, args: req1, error: new Error('some error')});
+		assert.end();
+	};
+	resultEmitter[req1.options.url].on('error', fn);
+	resultEmitter[req1.options.url].emit('error', {reqNumber: 1, args: req1, error: new Error('some error')});
+});

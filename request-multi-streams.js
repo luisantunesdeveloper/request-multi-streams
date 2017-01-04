@@ -31,7 +31,7 @@ function get(args) {
     const emitter = new eventEmitter();
     for (const i of iterable) {
         let reqNumber = i + 1;
-        const stream = progress(request(args.options.url), args.progressOptions)
+        const stream = progress(request(args.options), args.progressOptions)
             .on('response', (response) => {
                 emitter.emit('response', {reqNumber: reqNumber, args: args, response: response, stream: stream});
             })
