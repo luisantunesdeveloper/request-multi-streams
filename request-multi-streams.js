@@ -13,39 +13,52 @@ const defaultNumberOfRequests = 1;
  * @return {Array} Iterable array filled with integers
  */
 function createIterable(n) {
-    var arr = Array.apply(null, Array(n));
-    return arr.map((x, i) => {
-        return i;
-    });
+  var arr = Array.apply(null, Array(n));
+  return arr.map((x, i) => i);
 }
 
 /**
  *
  * Get a streams for locations. Build an iterable in the process.
- * @param {Object} args 
+ * @param {Object} args
  *
  * @return {Object} EventEmitter
  */
 function get(args) {
-    const iterable = createIterable(args.numberOfRequests || defaultNumberOfRequests);
-    const emitter = new eventEmitter();
-    for (const i of iterable) {
-        let reqNumber = i + 1;
-        const stream = progress(request(args.options), args.progressOptions)
-            .on('response', (response) => {
-                emitter.emit('response', {reqNumber: reqNumber, args: args, response: response, stream: stream});
-            })
-            .on('progress', (progress) => {
-                emitter.emit('progress', {reqNumber: reqNumber, args: args, progress: progress});
-            })
-            .on('end', () => {
-                emitter.emit('end', {reqNumber: reqNumber, args: args});
-            })
-            .on('error', (error) => {
-                emitter.emit('error', {reqNumber: reqNumber, args: args, error: error});
-            });
-    }
-    return emitter;
+  const iterable = createIterable(
+    args.numberOfRequests || defaultNumberOfRequests
+  );
+  const emitter = new eventEmitter();
+  for (const i of iterable) {
+    let reqNumber = i + 1;
+    const stream = progress(request(args.options), args.progressOptions)
+      .on('response', response => {
+        emitter.emit('response', {
+          reqNumber: reqNumber,
+          args: args,
+          response: response,
+          stream: stream,
+        });
+      })
+      .on('progress', progress => {
+        emitter.emit('progress', {
+          reqNumber: reqNumber,
+          args: args,
+          progress: progress,
+        });
+      })
+      .on('end', () => {
+        emitter.emit('end', { reqNumber: reqNumber, args: args });
+      })
+      .on('error', error => {
+        emitter.emit('error', {
+          reqNumber: reqNumber,
+          args: args,
+          error: error,
+        });
+      });
+  }
+  return emitter;
 }
 
 /**
@@ -54,17 +67,16 @@ function get(args) {
  * @return {Object} the key is the url for each request/response
  */
 function streams(requests) {
-    if (!requests) {
-        return new Error('There is no requests to be made');
-    }
-    let emitters = {};
-    for(const request of requests) {
-        emitters[request.options.url] = get(request);
-    }
-    return emitters;
+  if (!requests || requests.length === 0) {
+    return new Error('There is no requests to be made');
+  }
+  let emitters = {};
+  for (const request of requests) {
+    emitters[request.options.url] = get(request);
+  }
+  return emitters;
 }
 
 module.exports = {
-    streams: streams
+  streams: streams,
 };
-

@@ -1,6 +1,6 @@
 {
   "name": "request-multi-streams",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Make multiple http requests. Receive response progress indicators, pipe streams.",
   "main": "index.js",
   "repository": {
@@ -14,10 +14,11 @@
     "request-progress": "^3.0.0"
   },
   "devDependencies": {
-    "chalk": "^1.1.3",
-    "proxyquire": "^1.7.10",
-    "tap": "^8.0.1",
-    "tap-spec": "^4.1.1",
+    "chalk": "^2.4.2",
+    "prettier": "^1.16.4",
+    "proxyquire": "^2.1.0",
+    "tap": "^12.5.3",
+    "tap-spec": "^5.0.0",
     "tape": "^4.6.3"
   },
   "scripts": {
